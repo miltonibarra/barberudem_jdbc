@@ -38,7 +38,8 @@ public class JDBCLugarDAO implements LugarDAO {
     // Objetos que administran la conexion a la base de datos
     Connection conn = null;
     PreparedStatement ps = null;
-
+    ResultSet rs = null;
+    
     try {
       // Obtiene la conexion y prepara la consulta
       conn = dataSource.getConnection();
@@ -46,7 +47,7 @@ public class JDBCLugarDAO implements LugarDAO {
       ps.setInt(1, lugarId);
 
       // Se obtienen los datos
-      ResultSet rs = ps.executeQuery();
+      rs = ps.executeQuery();
       if (rs.next()) {
         lugar.setId(rs.getInt("id"));
         lugar.setAddress(rs.getString("direccion"));
@@ -59,21 +60,24 @@ public class JDBCLugarDAO implements LugarDAO {
         lugar.setSchedule(rs.getString("horario"));
       }
 
-      // Se cierra los recursos utilizados
-      rs.close();
-      ps.close();
-
       return lugar;
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      // Se cierra la conexion aqui porque siempre se debe usar independiente de las excepciones
-      if (conn != null) {
-        try {
-          conn.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
+      // Se cierra los recursos utilizados
+      try {
+        if (rs != null) {
+          rs.close();
         }
+        if (ps != null) {
+          ps.close();
+        }
+        // Se cierra la conexion aqui porque siempre se debe usar independiente de las excepciones
+        if (conn != null) {
+          conn.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
       }
     }
 
