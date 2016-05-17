@@ -7,7 +7,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import co.com.barberudem.DAO.LugarDAO;
 import co.com.barberudem.jdbc.entities.Lugar;
+import co.com.barberudem.model.LugarDTO;
 
 
 /**
@@ -27,13 +29,13 @@ public class JDBCLugarDAO implements LugarDAO {
     this.dataSource = dataSource;
   }
 
-  public Lugar findLugarByID(int lugarId) {
+  public LugarDTO findLugarByID(int lugarId) {
 
     // Consulta que se realizara contra la base de datos
     String sql = "SELECT * FROM lugar WHERE id = ?";
 
     // Entidad que retornara el metodo
-    Lugar lugar = new Lugar();
+    LugarDTO lugar = new LugarDTO();
 
     // Objetos que administran la conexion a la base de datos
     Connection conn = null;
@@ -81,6 +83,11 @@ public class JDBCLugarDAO implements LugarDAO {
       }
     }
 
+    return null;
+  }
+
+  public LugarDTO findLugares() {
+    // TODO Auto-generated method stub
     return null;
   }
 
